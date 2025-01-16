@@ -106,10 +106,10 @@ Customize the feedback widget during dragging:
 feedback: Material(
   elevation: 4.0,
   child: Container(
-  color: Colors.amber,
-  padding: const EdgeInsets.all(16.0),
-  child: const Text("Dragging Item"
-    ),
+      color: Colors.amber,
+      padding: const EdgeInsets.all(16.0),
+      child: const Text("Dragging Item"
+        ),
   ),
 )
 ```
