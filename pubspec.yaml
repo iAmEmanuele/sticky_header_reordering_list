@@ -1,6 +1,6 @@
 name: sticky_header_reordering_list
-description: A Flutter plugin for creating reorderable lists with sticky headers and grouped sections.
-version: 0.0.1
+description: A Flutter plugin for creating reordering lists with sticky headers and grouped sections.
+version: 1.0.0
 homepage: https://github.com/iAmEmanuele/sticky_header_reordering_list
 
 environment:

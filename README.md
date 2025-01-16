@@ -1,6 +1,6 @@
 # sticky_header_reordering_list
 
-A Flutter widget to create reorderable lists with sticky headers, making it easy to group items by
+A Flutter widget to create reordering lists with sticky headers, making it easy to group items by
 sections and reorder them with drag-and-drop functionality.
 
 ## Features
@@ -19,7 +19,7 @@ Add this package to your project by including it in the `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  sticky_header_reordering_list: ^0.0.1
+  sticky_header_reordering_list: ^1.0.0
 ```
 
 Import it in your Dart code:
@@ -30,47 +30,41 @@ import 'package:sticky_header_reordering_list/sticky_header_reordering_list.dart
 
 ## Usage
 
-Here’s how to use `StickyHeaderReorderableList` in your Flutter application:
+Here’s how to use `StickyHeaderReorderingList` in your Flutter application:
 
 ```dart
-StickyHeaderReorderableList<String>
-(
-items: ['Apple', 'Banana', 'Carrot'],
-sectionExtractor: (item) => item[0], // Groups items by the first letter
-headerBuilder: (context, section) => Container(
-color: Colors.grey[200],
-padding: const EdgeInsets.all(8.0),
-child: Text(
-section,
-style: const TextStyle(fontWeight: FontWeight.bold),
+StickyHeaderReorderingList<Map<String, String>>(
+  items: movies,
+  sectionExtractor: (item) => item["genre"] ?? "",
+  headerBuilder: (context, section) => Container(
+    color: Colors.blue[400],
+    padding: const EdgeInsets.all(8.0),
+    child: Text(
+        section,
+        style: const TextStyle(
+        fontWeight: FontWeight.bold,
+        color: Colors.white,
+      ),
+    ),
+  ),
+  itemBuilder: (context, item) => Column(
+    children: [
+        ListTile(
+          title: Text(item["title"] ?? "Unknown"),
+        ),
+      ],
+    ),
+  isReordering: true,
+  onReorderElements: (data, oldItem, newItem, newIndex, oldIndex, groupedItems) {
+    print("Reordered: $oldItem -> $newItem");
+  },
 ),
-),
-itemBuilder: (context, item) => ListTile(title: Text(item)),
-isReorderable: true,
-onReorderElements: (data, oldItem, newItem, newIndex, oldIndex, groupedItems) {
-print("Reordered: $oldItem -> $newItem");
-},
-feedback: Material(
-child: SizedBox(
-width: MediaQuery.of(context).size.width,
-child: const Text("Dragging Item"),
-),
-),
-childWhenDragging: const Opacity(
-opacity: 0.5,
-child: Text("Placeholder while dragging
-"
-)
-,
-)
-,
-);
 
 ```
 
 ## Properties
 
-The `StickyHeaderReorderableList` widget accepts the following properties:
+The `StickyHeaderReorderingList` widget accepts the following properties:
 
 | Property              | Description                                             | Required | Type                                    | Default |
 | --------------------- | ------------------------------------------------------- | -------- | --------------------------------------- | ------- |
@@ -78,7 +72,7 @@ The `StickyHeaderReorderableList` widget accepts the following properties:
 | `sectionExtractor`    | Function to extract the section name from each item.    | Yes      | `String Function(T)`                    |         |
 | `headerBuilder`       | Builder function for creating section headers.          | Yes      | `Widget Function(BuildContext, String)` |         |
 | `itemBuilder`         | Builder function for creating list items.               | Yes      | `Widget Function(BuildContext, T)`      |         |
-| `isReorderable`       | Determines whether drag-and-drop reordering is enabled. | No       | `bool`                                  | `false` |
+| `isReordering`       | Determines whether drag-and-drop reordering is enabled. | No       | `bool`                                  | `false` |
 | `onReorderElements`   | Callback triggered during reordering of items.          | No       | `void Function(...)`                    | `null`  |
 | `heightOfFirstHeader` | The height of the first sticky header.                  | No       | `double`                                | `50`    |
 | `feedback`            | Widget displayed during a drag-and-drop operation.      | No       | `Widget?`                               | `null`  |
@@ -91,18 +85,17 @@ The `StickyHeaderReorderableList` widget accepts the following properties:
 Modify the appearance of headers using the headerBuilder property:
 
 ```dart
-headerBuilder: (context, section) => Container
-(
-color: Colors.blueAccent,
-padding: const EdgeInsets.all(8.0),
-child: Text(
-section,
-style: const TextStyle(
-fontSize: 18,
-color: Colors.white,
-),
-),
-);
+headerBuilder: (context, section) => Container(
+  color: Colors.blueAccent,
+  padding: const EdgeInsets.all(8.0),
+  child: Text(
+    section,
+    style: const TextStyle(
+      fontSize: 18,
+      color: Colors.white,
+    ),
+  ),
+)
 ```
 
 ### Drag Feedback
@@ -110,18 +103,15 @@ color: Colors.white,
 Customize the feedback widget during dragging:
 
 ```dart
-feedback: Material
-(
-elevation: 4.0,
-child: Container(
-color: Colors.amber,
-padding: const EdgeInsets.all(16.0),
-child: const Text("Dragging Item"
+feedback: Material(
+  elevation: 4.0,
+  child: Container(
+  color: Colors.amber,
+  padding: const EdgeInsets.all(16.0),
+  child: const Text("Dragging Item"
+    ),
+  ),
 )
-,
-)
-,
-);
 ```
 
 Feel free to customize the properties and behavior based on your specific needs!
@@ -136,5 +126,5 @@ This library is licensed under the BSD 3-Clause License. See the [**LICENSE**](h
 
 ---
 
-This library is designed to provide a flexible way to manage sticky headers and reorderable lists in
+This library is designed to provide a flexible way to manage sticky headers and reordering lists in
 Flutter applications.

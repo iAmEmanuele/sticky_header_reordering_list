@@ -1,0 +1,59 @@
+# Flutter/Dart specific
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+build/
+
+# Example project build files
+example/.dart_tool/
+example/build/
+example/ios/Pods/
+example/ios/.symlinks/
+example/ios/Flutter/Flutter.framework/
+example/ios/Flutter/Flutter.podspec
+example/android/.cxx/
+example/android/local.properties
+example/linux/.dart_tool/
+example/macos/.dart_tool/
+example/windows/.dart_tool/
+
+# IntelliJ/Android Studio
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# macOS
+.DS_Store
+
+# Linux
+*.so
+
+# Windows
+*.dll
+*.exe
+
+# Web
+web/.dart_tool/
+web/.build/
+
+# Temporary files
+*.log
+*.tmp
+
+# CI/CD
+.ci/
+.github/
+*.lock
+
+# Private keys
+**/*.key
+**/*.jks
+**/key.properties
