@@ -137,14 +137,20 @@ Feel free to customize the properties and behavior based on your specific needs!
 ## Screenshots
 
 ### Android
-<img src="images/example-android.gif" height="500" alt="demo example Android"/>
+<img src="https://raw.githubusercontent.com/iAmEmanuele/sticky_header_reordering_list/refs/heads/main/images/example-android.gif" height="500" alt="demo example Android"/>
 
 ### iOS
-<img src="images/example-ios.gif" height="500" alt="demo example iOS"/>
+<img src="https://raw.githubusercontent.com/iAmEmanuele/sticky_header_reordering_list/refs/heads/main/images/example-ios.gif" height="500" alt="demo example iOS"/>
 
 ## Example App
 
 For a complete working example, check out the [**example**](https://github.com/iAmEmanuele/sticky_header_reordering_list/tree/main/example) folder.
+
+## Coming Soon: sticky_header_reordering_grid
+
+I'm excited to announce a new addition to the family! **sticky_header_reordering_grid** will bring all the features of `sticky_header_reordering_list` to a grid layout.
+
+Stay tuned for updates as I develop this flexible widget for your Flutter applications!
 
 ## License
 

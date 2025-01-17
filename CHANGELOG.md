@@ -1,3 +1,7 @@
+## 1.0.1
+
+- Added more information in readme
+
 ## 1.0.0
 
 - First release
