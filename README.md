@@ -20,7 +20,7 @@ Add this package to your project by including it in the `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  sticky_header_reordering_list: ^1.0.0
+  sticky_header_reordering_list: ^1.0.2
 ```
 
 Import it in your Dart code:
