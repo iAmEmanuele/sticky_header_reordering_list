@@ -136,7 +136,11 @@ Feel free to customize the properties and behavior based on your specific needs!
 
 ## Screenshots
 
+### Android
+<img src="images/example-android.gif" height="500" alt="demo example Android"/>
 
+### iOS
+<img src="images/example-ios.gif" height="500" alt="demo example iOS"/>
 
 ## Example App
 
