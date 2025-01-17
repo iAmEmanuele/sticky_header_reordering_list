@@ -134,6 +134,10 @@ The dividerBuilder is optional. If not provided, no separators will appear betwe
 
 Feel free to customize the properties and behavior based on your specific needs!
 
+## Screenshots
+
+
+
 ## Example App
 
 For a complete working example, check out the [**example**](https://github.com/iAmEmanuele/sticky_header_reordering_list/tree/main/example) folder.
