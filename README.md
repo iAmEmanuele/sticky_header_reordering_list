@@ -1,13 +1,14 @@
 # sticky_header_reordering_list
 
 A Flutter widget to create reordering lists with sticky headers, making it easy to group items by
-sections and reorder them with drag-and-drop functionality.
+sections, reorder them with drag-and-drop functionality, and optionally add customizable dividers between list items.
 
 ## Features
 
 - Group items into sections using custom extractors.
 - Display sticky headers for each section.
 - Enable drag-and-drop reordering of items within or across sections.
+- Add optional separators between list items with a customizable builder.
 - Fully customizable headers, items, and drag feedback.
 - Compatible with any type of data.
 
@@ -58,25 +59,29 @@ StickyHeaderReorderingList<Map<String, String>>(
   onReorderElements: (data, oldItem, newItem, newIndex, oldIndex, groupedItems) {
     print("Reordered: $oldItem -> $newItem");
   },
+  dividerBuilder: (context, index) => Divider(
+    color: Colors.grey,
+    thickness: 1,
+    ),
 ),
-
 ```
 
 ## Properties
 
 The `StickyHeaderReorderingList` widget accepts the following properties:
 
-| Property              | Description                                             | Required | Type                                    | Default |
-| --------------------- | ------------------------------------------------------- | -------- | --------------------------------------- | ------- |
-| `items`               | The list of items to display.                           | Yes      | `List<T>`                               |         |
-| `sectionExtractor`    | Function to extract the section name from each item.    | Yes      | `String Function(T)`                    |         |
+| Property              | Description                                             | Required | Type                                   | Default |
+| --------------------- | ------------------------------------------------------- | -------- | -------------------------------------- | ------- |
+| `items`               | The list of items to display.                           | Yes      | `List<T>`                              |         |
+| `sectionExtractor`    | Function to extract the section name from each item.    | Yes      | `String Function(T)`                   |         |
 | `headerBuilder`       | Builder function for creating section headers.          | Yes      | `Widget Function(BuildContext, String)` |         |
-| `itemBuilder`         | Builder function for creating list items.               | Yes      | `Widget Function(BuildContext, T)`      |         |
-| `isReordering`       | Determines whether drag-and-drop reordering is enabled. | No       | `bool`                                  | `false` |
-| `onReorderElements`   | Callback triggered during reordering of items.          | No       | `void Function(...)`                    | `null`  |
-| `heightOfFirstHeader` | The height of the first sticky header.                  | No       | `double`                                | `50`    |
-| `feedback`            | Widget displayed during a drag-and-drop operation.      | No       | `Widget?`                               | `null`  |
-| `childWhenDragging`   | Widget displayed in place of the dragged item.          | No       | `Widget?`                               | `null`  |
+| `itemBuilder`         | Builder function for creating list items.               | Yes      | `Widget Function(BuildContext, T)`     |         |
+| `isReordering`       | Determines whether drag-and-drop reordering is enabled. | No       | `bool`                                 | `false` |
+| `onReorderElements`   | Callback triggered during reordering of items.          | No       | `void Function(...)`                   | `null`  |
+| `heightOfFirstHeader` | The height of the first sticky header.                  | No       | `double`                               | `50`    |
+| `feedback`            | Widget displayed during a drag-and-drop operation.      | No       | `Widget?`                              | `null`  |
+| `childWhenDragging`   | Widget displayed in place of the dragged item.          | No       | `Widget?`                              | `null`  |
+| `dividerBuilder`   | 	Builder function for creating a separator between items.          | No       | `Widget Function(BuildContext, int)?`  | `null`  |
 
 ## Customization
 
@@ -108,11 +113,24 @@ feedback: Material(
   child: Container(
       color: Colors.amber,
       padding: const EdgeInsets.all(16.0),
-      child: const Text("Dragging Item"
-        ),
+      child: const Text("Dragging Item"),
   ),
 )
 ```
+
+### Divider Customization
+
+Add separators between list items using the dividerBuilder property. You can fully customize the appearance and behavior of the separators:
+
+```dart
+dividerBuilder: (context, index) => Divider(
+    color: Colors.grey[400],
+    thickness: 1,
+    indent: 16,
+    endIndent: 16,
+),
+```
+The dividerBuilder is optional. If not provided, no separators will appear between the list items.
 
 Feel free to customize the properties and behavior based on your specific needs!
 

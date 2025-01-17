@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:sticky_header_reordering_list/sticky_header_reordering_list.dart';
 
@@ -17,7 +18,7 @@ class App extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,
       ),
-      home: const HomePage(title: 'Sticky Header Reorder able List'),
+      home: const HomePage(title: 'Sticky Header Reordering List'),
     );
   }
 }
@@ -573,8 +574,10 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           itemBuilder: (context, item) => Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ListTile(
+                contentPadding: const EdgeInsets.only(left: 20),
                 title: Text(item["title"] ?? "Unknown"),
               ),
             ],
@@ -582,8 +585,16 @@ class _HomePageState extends State<HomePage> {
           isReordering: true,
           onReorderElements:
               (data, oldItem, newItem, newIndex, oldIndex, groupedItems) {
-            print("Reordered: $oldItem -> $newItem");
+            if (kDebugMode) {
+              print("Reordered: $oldItem -> $newItem");
+            }
           },
+          dividerBuilder: (context, index) => Divider(
+            color: Colors.grey[300],
+            indent: 20,
+            endIndent: 20,
+            thickness: 1,
+          ),
         ),
       ),
     );

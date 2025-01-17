@@ -35,6 +35,10 @@ import 'package:sticky_header_reordering_list/src/utils/measure_size.dart';
 ///               opacity: 0.5,
 ///               child: widget.itemBuilder(context, item),
 ///             ),
+///  dividerBuilder: (context, index) => Divider(
+///             color: Colors.grey,
+///             thickness: 1,
+///           ),
 /// );
 /// ```
 class StickyHeaderReorderingList<T> extends StatefulWidget {
@@ -96,21 +100,33 @@ class StickyHeaderReorderingList<T> extends StatefulWidget {
   /// in the original item's position while it is being dragged.
   final Widget? childWhenDragging;
 
+  /// A widget builder that creates a separator between items in the list.
+  ///
+  /// If not provided, no separators will be shown between the list items.
+  /// This builder allows you to customize the appearance of the separators
+  /// based on the index of the current item.
+  ///
+  /// The separator is displayed between two consecutive items but not after
+  /// the last item in the list.
+  ///
+  /// - `context`: The build context for the current separator.
+  /// - `index`: The index of the item before which the separator should be displayed.
   final Widget Function(BuildContext, int)? dividerBuilder;
 
   /// Creates a [StickyHeaderReorderingList] widget.
-  const StickyHeaderReorderingList(
-      {super.key,
-      required this.items,
-      required this.sectionExtractor,
-      required this.headerBuilder,
-      required this.itemBuilder,
-      this.isReordering = false,
-      this.onReorderElements,
-      this.heightOfFirstHeader = 50,
-      this.feedback,
-      this.childWhenDragging,
-      this.dividerBuilder});
+  const StickyHeaderReorderingList({
+    super.key,
+    required this.items,
+    required this.sectionExtractor,
+    required this.headerBuilder,
+    required this.itemBuilder,
+    this.isReordering = false,
+    this.onReorderElements,
+    this.heightOfFirstHeader = 50,
+    this.feedback,
+    this.childWhenDragging,
+    this.dividerBuilder,
+  });
 
   @override
   State<StickyHeaderReorderingList> createState() =>
@@ -241,52 +257,65 @@ class _StickyHeaderReorderingListState<T>
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         (BuildContext context, int index) {
-          if (items.isEmpty) {
-            return DragTarget<Map<String, dynamic>>(
-              onWillAcceptWithDetails: (data) => true,
-              onAcceptWithDetails: (data) {
-                final int oldSectionIndex = data.data['sectionIndex'];
-                final int oldIndex = data.data['itemIndex'];
-                final T oldItem = data.data['item'];
-                WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (index < items.length) {
+            final item = items[index];
+            final Widget itemWidget = MeasureSize(
+              onChange: (size) {
+                if (size != null && size.height != itemHeight) {
                   setState(() {
-                    groupedItems[groupedItems.keys.elementAt(oldSectionIndex)]!
-                        .removeAt(oldIndex);
-                    groupedItems[groupedItems.keys.elementAt(sectionIndex)]!
-                        .add(oldItem);
-
-                    if (widget.onReorderElements != null) {
-                      widget.onReorderElements!(
-                        data.data,
-                        oldItem,
-                        oldItem,
-                        0,
-                        oldIndex,
-                        groupedItems,
-                      );
-                    }
+                    itemHeight = size.height;
                   });
-                });
+                }
               },
-              builder: (context, candidateData, rejectedData) {
-                return Container(
-                  height: 50,
-                );
-              },
+              child: !widget.isReordering
+                  ? widget.itemBuilder(context, item)
+                  : _buildDraggableItem(sectionIndex, index, item),
             );
+
+            if (widget.dividerBuilder != null && index < items.length - 1) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  itemWidget,
+                  widget.dividerBuilder!(context, index),
+                ],
+              );
+            } else {
+              return itemWidget;
+            }
           }
-          final item = items[index];
-          return MeasureSize(
-            onChange: (size) {
-              if (size != null && size.height != itemHeight) {
+
+          return DragTarget<Map<String, dynamic>>(
+            onWillAcceptWithDetails: (data) => true,
+            onAcceptWithDetails: (data) {
+              final int oldSectionIndex = data.data['sectionIndex'];
+              final int oldIndex = data.data['itemIndex'];
+              final T oldItem = data.data['item'];
+              WidgetsBinding.instance.addPostFrameCallback((_) {
                 setState(() {
-                  itemHeight = size.height;
+                  groupedItems[groupedItems.keys.elementAt(oldSectionIndex)]!
+                      .removeAt(oldIndex);
+                  groupedItems[groupedItems.keys.elementAt(sectionIndex)]!
+                      .add(oldItem);
+
+                  if (widget.onReorderElements != null) {
+                    widget.onReorderElements!(
+                      data.data,
+                      oldItem,
+                      oldItem,
+                      0,
+                      oldIndex,
+                      groupedItems,
+                    );
+                  }
                 });
-              }
+              });
             },
-            child: !widget.isReordering
-                ? widget.itemBuilder(context, item)
-                : _buildDraggableItem(sectionIndex, index, item),
+            builder: (context, candidateData, rejectedData) {
+              return Container(
+                height: 50,
+              );
+            },
           );
         },
         childCount: items.isEmpty ? 1 : items.length,
